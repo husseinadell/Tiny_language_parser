@@ -126,16 +126,43 @@ class Parser:
         return
 
     def assign_statement(self):
-        pass
+        if self.tokens_list[self.iterator].type == "Identifier":
+            node = Node(self.tokens_list[self.iterator].value, self.current_node, self.parents[-1])
+            self.nodes.append(node)
+            self.current_node += 1
+            self.parents.append(node)
+            self.match("Identifier")
+        else:
+            raise ValueError("read isn't followed by an identifier")
+        self.match(":=")
+        self.expression()
 
     def expression(self):
-        pass
+        self.simple_expression()
+        if self.tokens_list[self.iterator].value in ['<', '=']:
+            self.comparison()
+            self.simple_expression()
+            self.parents.pop()
 
     def simple_expression(self):
-        pass
+        self.term()
+        nested_op = 0
+        while self.tokens_list[self.iterator].value in ['+', '-']:
+            self.addop()
+            self.term()
+            nested_op += 1
+        while nested_op > 0:
+            self.parents.pop()
+            nested_op -= 1
 
-    def comparision(self):
-        pass
+    def comparison(self):
+        if self.tokens_list[self.iterator].value in ['<', '=']:
+            node = Node(self.tokens_list[self.iterator].value, self.current_node, self.parents[-1])
+            self.nodes.append(node)
+            self.parents.append(node)
+            self.nodes[self.current_node - 2].parent_node = self.parents[-1]
+            self.current_node += 1
+            self.match(self.tokens_list[self.iterator].value)
 
     def addop(self):
         # hossam
@@ -157,4 +184,3 @@ class Parser:
     def mul_op(self):
         # hossam
         pass
-
