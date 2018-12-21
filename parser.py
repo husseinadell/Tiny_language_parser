@@ -1,3 +1,5 @@
+import graphviz
+
 class Token:
     def __init__(self, type, value):
         self.type = type
@@ -18,11 +20,12 @@ class Node:
         self.value = value
         self.index = index
         self.parent_node = parent_node
+        self.connect_parent = True
 
     def get_index(self):
         return self.index
 
-    def if_statement(self):
+    def is_statement(self):
         words = ["if", "then", "else", "end", "repeat", "until", "read", "write", "assign"]
         return self.value in words
 
@@ -34,7 +37,6 @@ class Parser:
         self.nodes = []
         self.parents = []
         self.current_node = 1
-        self.connect_parent = True
 
     def program(self):
         # hossam
@@ -185,4 +187,32 @@ class Parser:
         return
 
     def draw_tree(self):
-        pass
+        tree = graphviz.Digraph(comment="syntax tree")
+
+        for node in self.nodes:
+            if node.is_statement():
+                tree.node(str(node.index), node.value, shape="square")
+            else:
+                tree.node(str(node.index), node.value)
+
+        for node in self.nodes:
+            if node.parent_node != 0 and node.connect_parent:
+                tree.edge(str(node.parent_node), str(node.index))
+            elif node.parent_node != 0 and not node.connect_parent:
+                tree.edge(str(node.parent_node), str(node.index), style='dashed', color='grey')
+            else:
+                raise ValueError("in drawing edges .. some node failed both conditions")
+
+        for i in range(len(self.nodes)):
+            for j in range(i + 1, len(self.nodes)):
+                if self.nodes[i].parent_node == self.nodes[j].parent_node and not self.nodes[j].connect_parent\
+                        and self.nodes[j].is_statement() and self.nodes[i].is_statement():
+                    tree.edge(str(self.nodes[i].index), str(self.nodes[j].index), constraint='false')
+                    break
+                else:
+                    break
+
+        tree.render('Syntax-Tree.gv', view=True)
+
+
+
