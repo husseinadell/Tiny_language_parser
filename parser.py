@@ -203,8 +203,6 @@ class Parser:
 
     def mul_op(self):
         # hossam
-<<<<<<< HEAD
-=======
         if self.tokens_list[self.iterator].value == "*":
             pass
         if self.tokens_list[self.iterator].value == "/":
@@ -214,5 +212,4 @@ class Parser:
         return
 
     def draw_tree(self):
->>>>>>> 027f478836dcd22e07c2eab44a7aa85bfae88923
         pass
