@@ -9,7 +9,7 @@ def tokenizer(file="output.txt"):
         lst_tokens = []
         for line in f:
             tokens = line.split(',')
-            token = Token(tokens[1].strip(), tokens[0].strip())
+            token = Token(tokens[1].strip().lower(), tokens[0].strip().lower())
             lst_tokens.append(token)
 
 
@@ -28,42 +28,102 @@ class Node:
 
 
 class Parser:
-    def __init__(self, tokens_list, iterator=0):
+    def __init__(self, tokens_list):
         self.tokens_list = tokens_list
-        self.iterator = iterator
+        self.iterator = 0
         self.nodes = []
         self.parents = []
         self.current_node = 1
-
-    def match(self):
-        # hossam
-        pass
+        self.connect_parent = True
 
     def program(self):
         # hossam
-        pass
+        self.statement_sequence()
+        return
+
+    def match(self, expected_value):
+        # hossam
+        if self.tokens_list[self.iterator].value == expected_value:
+            self.iterator += 1
+        else:
+            raise ValueError("tokens are not in right sequence")
+        return
 
     def statement_sequence(self):
         # hossam
-        pass
+        self.statement()
+        while self.tokens_list[self.iterator].value == ";":
+            self.match(";")
+            self.statement()
+        return
 
     def statement(self):
         # hossam
-        pass
+        token = self.tokens_list[self.iterator]
+        node = Node(token.value, self.current_node, self.parents[-1])
+        self.nodes.append(node)
+        self.current_node += 1
+        self.parents.append(node)
+
+        if token.value == "if":
+            self.if_statement()
+            self.parents.pop()
+
+        elif token.value == "repeat":
+            self.repeat_statement()
+            self.parents.pop()
+
+        elif token.value == "read":
+            self.read_statement()
+            self.parents.pop()
+
+        elif token.value == "write":
+            self.write_statement()
+            self.parents.pop()
+
+        elif token.value == "assign":
+            self.assign_statement()
+            self.parents.pop()
+
+        else:
+            raise ValueError("Reserved Word {} Not Supported".format(token.value))
+        return
 
     def if_statement(self):
-        pass
+        self.match("if")
+        self.expression()
+        self.match("then")
+        self.statement_sequence()
+        if self.tokens_list[self.iterator] == "else":
+            self.match("else")
+            self.statement_sequence()
+        self.match("end")
+        return
 
     def repeat_statement(self):
-        pass
+        self.match("repeat")
+        self.statement_sequence()
+        self.match("until")
+        self.expression()
+        return
 
     def read_statement(self):
         # hossam
-        pass
+        self.match("read")
+        if self.tokens_list[self.iterator].type == "Identifier":
+            node = Node(self.tokens_list[self.iterator].value, self.current_node, self.parents[-1])
+            self.nodes.append(node)
+            self.current_node += 1
+            self.match("Identifier")
+            return
+        else:
+            raise ValueError("read isn't followed by an identifier")
 
     def write_statement(self):
         # hossam
-        pass
+        self.match("write")
+        self.expression()
+        return
 
     def assign_statement(self):
         pass
@@ -79,7 +139,13 @@ class Parser:
 
     def addop(self):
         # hossam
-        pass
+        token = self.tokens_list[self.iterator]
+        if token.value == "+":
+            pass
+        elif token.value == "-":
+            pass
+        else:
+            raise ValueError("add op isn't + or -")
 
     def factor(self):
         pass
