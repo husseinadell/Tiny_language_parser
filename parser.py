@@ -37,6 +37,7 @@ class Parser:
         self.nodes = []
         self.parents = []
         self.current_node = 1
+        self.con_par = True
 
     def program(self):
         # hossam
@@ -53,8 +54,10 @@ class Parser:
 
     def statement_sequence(self):
         # hossam
+        self.con_par = True
         self.statement()
         while self.tokens_list[self.iterator].value == ";":
+            self.con_par = False
             self.match(";")
             self.statement()
         return
@@ -63,6 +66,7 @@ class Parser:
         # hossam
         token = self.tokens_list[self.iterator]
         node = Node(token.value, self.current_node, self.parents[-1])
+        node.connect_parent = self.con_par
         self.nodes.append(node)
         self.current_node += 1
         self.parents.append(node)
