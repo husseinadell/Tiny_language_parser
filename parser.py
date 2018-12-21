@@ -168,9 +168,19 @@ class Parser:
         # hossam
         token = self.tokens_list[self.iterator]
         if token.value == "+":
-            pass
+            node = Node(self.tokens_list[self.iterator].value, self.current_node, self.parents[-1])
+            self.nodes.append(node)
+            self.parents.append(self.current_node)
+            self.nodes[self.current_node - 2].parent_node = self.parents[-1]
+            self.current_node += 1
+            self.match("+")
         elif token.value == "-":
-            pass
+            node = Node(self.tokens_list[self.iterator].value, self.current_node, self.parents[-1])
+            self.nodes.append(node)
+            self.parents.append(self.current_node)
+            self.nodes[self.current_node - 2].parent_node = self.parents[-1]
+            self.current_node += 1
+            self.match("-")
         else:
             raise ValueError("add op isn't + or -")
 
@@ -179,8 +189,30 @@ class Parser:
 
     def term(self):
         # hossam
-        pass
+        self.factor()
+        nested_operations = 0
+        while self.tokens_list[self.iterator] == "*" or self.tokens_list[self.iterator] == "/":
+            self.mul_op()
+            self.factor()
+            nested_operations += 1
+
+        while nested_operations > 0:
+            self.parents.pop()
+            nested_operations -= 1
+        return
 
     def mul_op(self):
         # hossam
+<<<<<<< HEAD
+=======
+        if self.tokens_list[self.iterator].value == "*":
+            pass
+        if self.tokens_list[self.iterator].value == "/":
+            pass
+        else:
+            raise ValueError("mul op isn't * or /")
+        return
+
+    def draw_tree(self):
+>>>>>>> 027f478836dcd22e07c2eab44a7aa85bfae88923
         pass
