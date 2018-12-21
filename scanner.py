@@ -80,5 +80,3 @@ def scanner():
                         output.write(", ")
                         output.write("Special Symbol \n")
     return True
-
-scanner()
