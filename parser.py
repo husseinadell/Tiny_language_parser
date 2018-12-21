@@ -41,7 +41,7 @@ class Parser:
     def program(self):
         pass
 
-    def stmt_statement(self):
+    def statement_sequence(self):
         pass
 
     def statement(self):
