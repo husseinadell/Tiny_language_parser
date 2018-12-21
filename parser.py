@@ -36,15 +36,19 @@ class Parser:
         self.current_node = 1
 
     def match(self):
+        # hossam
         pass
 
     def program(self):
+        # hossam
         pass
 
     def statement_sequence(self):
+        # hossam
         pass
 
     def statement(self):
+        # hossam
         pass
 
     def if_statement(self):
@@ -54,9 +58,11 @@ class Parser:
         pass
 
     def read_statement(self):
+        # hossam
         pass
 
     def write_statement(self):
+        # hossam
         pass
 
     def assign_statement(self):
@@ -72,14 +78,17 @@ class Parser:
         pass
 
     def addop(self):
+        # hossam
         pass
 
     def factor(self):
         pass
 
     def term(self):
+        # hossam
         pass
 
     def mul_op(self):
+        # hossam
         pass
 
