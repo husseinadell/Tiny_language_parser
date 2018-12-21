@@ -1,0 +1,11 @@
+{sample program in TINY lang to test that out programe is working}
+read x;
+if 0<x then {some comment here}
+fact (:=1);
+repeat { some comment there }
+fact := fact * x;
+x:=x-1
+until x=0;              { multi line
+ comment }
+write fact
+end
