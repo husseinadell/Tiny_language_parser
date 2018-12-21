@@ -191,7 +191,20 @@ class Parser:
             raise ValueError("add op isn't + or -")
 
     def factor(self):
-        pass
+        if self.tokens_list[self.iterator].value == "(":
+            self.match("(")
+            self.expression()
+            self.match(")")
+        elif self.tokens_list[self.iterator].type == "Identifier":
+            node = Node(self.tokens_list[self.iterator].value, self.current_node, self.parents[-1])
+            self.nodes.append(node)
+            self.current_node += 1
+            self.match("Identifier")
+        elif self.tokens_list[self.iterator].type == "Number":
+            node = Node(self.tokens_list[self.iterator].value, self.current_node, self.parents[-1])
+            self.nodes.append(node)
+            self.current_node += 1
+            self.match("Number")
 
     def term(self):
         # hossam
