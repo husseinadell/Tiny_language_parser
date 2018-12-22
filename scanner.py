@@ -1,4 +1,4 @@
-def scanner():
+def scanner(file):
     words = {
         "Reserved Words": ["if", "then", "else", "end", "repeat", "until", "read", "write"],
         "Special Symbols": ["+", "-", "*", "/", "=", "<", "(", ")"]
@@ -7,7 +7,7 @@ def scanner():
     Symbols = ["+", "-", "*", "/", "=", "<", "(", ")"]
     comment_flag = 0
     # file = open()
-    with open("input.txt", 'r') as file:
+    with open(file, 'r') as file:
         with open("output.txt", "w") as output:
             for line in file:
                 if "(" in line:
@@ -79,4 +79,5 @@ def scanner():
                         output.write(";")
                         output.write(", ")
                         output.write("Special Symbol \n")
+            output.write("end, end")
     return True

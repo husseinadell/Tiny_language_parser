@@ -1,0 +1,26 @@
+x:=2;
+y:=32436;
+z:=5;
+a:=x-y-z+1+2+3;
+if z <8 then
+	repeat
+		a:=a*2;
+		z:=z-1;
+		if (4<5) then
+			write x;
+			x:=x+1
+		end
+	until z=0;
+	write a;
+	read x;
+	x:=x+1
+else
+	read b;
+	if b = 1 then
+		write b*(x-y)
+	else
+		write a
+	end;
+	write x
+end;
+write z
